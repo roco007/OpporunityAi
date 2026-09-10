@@ -30,7 +30,7 @@ Make sure your repository includes:
 
 ```
 VITE_GEMINI_API_KEY=your_actual_gemini_api_key_here
-VITE_GEMINI_MODEL=gemini-2.5-flash
+VITE_GEMINI_MODEL=gemini-3.6-flash
 ```
 
 6. Click "Deploy"
@@ -62,7 +62,7 @@ VITE_GEMINI_MODEL=gemini-2.5-flash
 
 1. Open your deployed URL (e.g., https://your-project.vercel.app)
 2. Navigate to the "Generate" page
-3. You should see: "✓ AI configured via environment (gemini-2.5-flash)"
+3. You should see: "✓ AI configured via environment (gemini-3.6-flash)"
 4. Try generating opportunities - it should work without any manual configuration!
 
 ## Environment Variables Reference
@@ -72,14 +72,14 @@ VITE_GEMINI_MODEL=gemini-2.5-flash
 | Variable | Description | Example |
 |----------|-------------|---------|
 | `VITE_GEMINI_API_KEY` | Your Google Gemini API key | `AIzaSy...` |
-| `VITE_GEMINI_MODEL` | Gemini model to use | `gemini-2.5-flash` |
+| `VITE_GEMINI_MODEL` | Gemini model to use | `gemini-3.6-flash` |
 
 ### Available Models
 
-- `gemini-2.5-pro` - Most capable, best quality
-- `gemini-2.5-flash` - **Recommended** - Great balance of speed and quality
-- `gemini-2.5-flash-lite` - Fastest, lowest cost
-- `gemini-2.0-flash` - Stable, well-tested
+- `gemini-3.8-flash` - Most capable, best quality
+- `gemini-3.6-flash` - **Recommended** - Great balance of speed and quality
+- `gemini-3.5-flash-lite` - Fastest, lowest cost
+- `gemini-3.1-flash-lite` - Stable, well-tested
 
 ## Managing Environment Variables
 

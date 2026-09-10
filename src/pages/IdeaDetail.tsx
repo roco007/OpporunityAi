@@ -1,17 +1,22 @@
+import { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { 
   ArrowLeft, MapPin, Building2, Clock, DollarSign, 
   TrendingUp, AlertTriangle, CheckCircle2, XCircle,
   Lightbulb, Target, Zap, Shield, Code2, Users,
-  ChevronRight, ExternalLink, BookOpen, BarChart3, Rocket
+  ChevronRight, ExternalLink, BookOpen, BarChart3, Rocket, Download, Copy, FileText, X, Loader2
 } from 'lucide-react';
 import { mockOpportunities } from '../data/opportunities';
 import { Opportunity } from '../types';
 import ScoreRadar from '../components/ScoreRadar';
 import ScoreCard from '../components/ScoreCard';
+import { buildDevelopmentPrompt, downloadAnalysisPdf } from '../lib/analysis-export';
 
 export default function IdeaDetail() {
   const { id } = useParams();
+  const [showBuildPrompt, setShowBuildPrompt] = useState(false);
+  const [promptCopied, setPromptCopied] = useState(false);
+  const [isDownloadingPdf, setIsDownloadingPdf] = useState(false);
   
   // Check session storage first (for AI-generated opportunities)
   const sessionData = sessionStorage.getItem(`opportunity-${id}`);
@@ -34,6 +39,35 @@ export default function IdeaDetail() {
     if (score >= 6) return 'text-blue-600';
     if (score >= 4) return 'text-yellow-600';
     return 'text-red-600';
+  };
+
+  const handleCopyBuildPrompt = async () => {
+    const prompt = buildDevelopmentPrompt(opportunity);
+    try {
+      await navigator.clipboard.writeText(prompt);
+      setPromptCopied(true);
+      window.setTimeout(() => setPromptCopied(false), 2000);
+    } catch {
+      const textArea = document.createElement('textarea');
+      textArea.value = prompt;
+      textArea.style.position = 'fixed';
+      textArea.style.opacity = '0';
+      document.body.appendChild(textArea);
+      textArea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textArea);
+      setPromptCopied(true);
+      window.setTimeout(() => setPromptCopied(false), 2000);
+    }
+  };
+
+  const handleDownloadPdf = async () => {
+    setIsDownloadingPdf(true);
+    try {
+      await downloadAnalysisPdf(opportunity);
+    } finally {
+      setIsDownloadingPdf(false);
+    }
   };
 
   return (
@@ -109,6 +143,38 @@ export default function IdeaDetail() {
           </div>
         </div>
       </div>
+
+      {/* Share and Build Actions */}
+      <section className="bg-gradient-to-r from-primary-600 to-primary-700 rounded-2xl p-5 sm:p-6 mb-6 text-white shadow-lg shadow-primary-500/20">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div>
+            <div className="flex items-center gap-2 mb-1">
+              <FileText className="w-5 h-5" />
+              <h2 className="text-lg font-bold">Share or build this opportunity</h2>
+            </div>
+            <p className="text-sm text-primary-100">Export the full research as a PDF, or generate a complete build brief for your preferred LLM.</p>
+          </div>
+          <div className="flex flex-col sm:flex-row gap-2 shrink-0">
+            <button
+              type="button"
+              onClick={handleDownloadPdf}
+              disabled={isDownloadingPdf}
+              className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-white text-primary-700 text-sm font-semibold hover:bg-primary-50 transition-colors disabled:opacity-70"
+            >
+              {isDownloadingPdf ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
+              {isDownloadingPdf ? 'Preparing PDF...' : 'Download PDF'}
+            </button>
+            <button
+              type="button"
+              onClick={() => setShowBuildPrompt(true)}
+              className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-primary-500/40 border border-primary-300/50 text-white text-sm font-semibold hover:bg-primary-500/60 transition-colors"
+            >
+              <Copy className="w-4 h-4" />
+              Build prompt
+            </button>
+          </div>
+        </div>
+      </section>
 
       {/* Main Content Grid */}
       <div className="grid lg:grid-cols-3 gap-6">
@@ -571,7 +637,38 @@ export default function IdeaDetail() {
           </div>
         </div>
       </div>
+
+      {showBuildPrompt && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
+          <button type="button" aria-label="Close build prompt" className="absolute inset-0 bg-surface-950/70 backdrop-blur-sm" onClick={() => setShowBuildPrompt(false)} />
+          <div role="dialog" aria-modal="true" aria-labelledby="build-prompt-title" className="relative w-full max-w-3xl max-h-[90vh] overflow-hidden rounded-2xl bg-white border border-surface-200 shadow-2xl">
+            <div className="flex items-start justify-between gap-4 px-5 sm:px-6 py-4 border-b border-surface-200">
+              <div>
+                <h2 id="build-prompt-title" className="text-lg font-bold text-surface-900">LLM build prompt</h2>
+                <p className="text-sm text-surface-500 mt-1">Copy this brief into ChatGPT, Codex, Claude, or another coding LLM to build {opportunity.projectName} from scratch.</p>
+              </div>
+              <button type="button" aria-label="Close build prompt" onClick={() => setShowBuildPrompt(false)} className="p-2 -mr-2 rounded-lg text-surface-500 hover:bg-surface-100 hover:text-surface-900 transition-colors">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            <div className="p-5 sm:p-6 overflow-y-auto max-h-[calc(90vh-164px)]">
+              <textarea
+                readOnly
+                value={buildDevelopmentPrompt(opportunity)}
+                aria-label="Generated LLM build prompt"
+                className="w-full min-h-[390px] resize-y rounded-xl bg-surface-50 border border-surface-200 p-4 font-mono text-xs leading-5 text-surface-700 focus:outline-none focus:ring-2 focus:ring-primary-500/20"
+              />
+            </div>
+            <div className="flex justify-end gap-3 px-5 sm:px-6 py-4 border-t border-surface-200 bg-surface-50">
+              <button type="button" onClick={() => setShowBuildPrompt(false)} className="px-4 py-2.5 rounded-xl text-sm font-medium text-surface-600 hover:bg-white transition-colors">Close</button>
+              <button type="button" onClick={handleCopyBuildPrompt} className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-primary-600 text-white text-sm font-semibold hover:bg-primary-700 transition-colors">
+                {promptCopied ? <CheckCircle2 className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+                {promptCopied ? 'Copied!' : 'Copy prompt'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
-

@@ -9,7 +9,7 @@ const STORAGE_KEY = 'opportunity-ai-settings';
 // Environment variables (set in .env.local for local, Vercel env vars for production)
 const ENV_API_KEY = import.meta.env.VITE_GEMINI_API_KEY || '';
 
-export const defaultModel = 'gemini-2.5-flash';
+export const defaultModel = 'gemini-3.6-flash';
 
 // Now we can reference defaultModel
 const ENV_MODEL = import.meta.env.VITE_GEMINI_MODEL || defaultModel;
@@ -78,23 +78,23 @@ export const getEnvInfo = () => {
 
 export const availableModels = [
   { 
-    value: 'gemini-2.5-pro', 
-    label: 'Gemini 2.5 Pro (Most Capable)',
-    description: 'Best quality, highest reasoning capability'
+    value: 'gemini-3.8-flash', 
+    label: 'Gemini 3.8 Flash (Most Capable)',
+    description: 'Most intelligent Flash model, best for complex reasoning'
   },
   { 
-    value: 'gemini-2.5-flash', 
-    label: 'Gemini 2.5 Flash (Recommended)',
+    value: 'gemini-3.6-flash', 
+    label: 'Gemini 3.6 Flash (Recommended)',
     description: 'Great balance of speed and quality'
   },
   { 
-    value: 'gemini-2.5-flash-lite', 
-    label: 'Gemini 2.5 Flash Lite (Fastest)',
+    value: 'gemini-3.5-flash-lite', 
+    label: 'Gemini 3.5 Flash Lite (Fastest)',
     description: 'Fastest responses, lowest cost'
   },
   { 
-    value: 'gemini-2.0-flash', 
-    label: 'Gemini 2.0 Flash (Stable)',
-    description: 'Reliable and well-tested'
+    value: 'gemini-3.1-flash-lite', 
+    label: 'Gemini 3.1 Flash-Lite (Stable)',
+    description: 'Frontier-class performance at a fraction of the cost'
   },
 ];

@@ -34,14 +34,14 @@
    - Add environment variables:
      ```
      VITE_GEMINI_API_KEY=your_actual_key_here
-     VITE_GEMINI_MODEL=gemini-2.5-flash
+     VITE_GEMINI_MODEL=gemini-3.6-flash
      ```
    - Click Deploy
 
 3. **Verify**
    - Open your deployed URL
    - Navigate to Generate page
-   - Should show: "✓ AI configured via environment (gemini-2.5-flash)"
+   - Should show: "✓ AI configured via environment (gemini-3.6-flash)"
 
 ## 📁 Files Created/Modified
 
@@ -63,14 +63,14 @@
 ### Required for Vercel
 ```bash
 VITE_GEMINI_API_KEY=AIzaSy...your_actual_key
-VITE_GEMINI_MODEL=gemini-2.5-flash
+VITE_GEMINI_MODEL=gemini-3.6-flash
 ```
 
 ### Available Models
-- `gemini-2.5-pro` - Most capable
-- `gemini-2.5-flash` - **Recommended** (default)
-- `gemini-2.5-flash-lite` - Fastest
-- `gemini-2.0-flash` - Stable
+- `gemini-3.8-flash` - Most capable
+- `gemini-3.6-flash` - **Recommended** (default)
+- `gemini-3.5-flash-lite` - Fastest
+- `gemini-3.1-flash-lite` - Stable
 
 ## 🎯 How It Works
 

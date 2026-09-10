@@ -131,10 +131,10 @@ async function callGemini(
 
 export function estimateCost(model: string): string {
   const costs: Record<string, string> = {
-    'gemini-2.5-pro': '~$0.03-0.10 per generation',
-    'gemini-2.5-flash': '~$0.01-0.03 per generation',
-    'gemini-2.5-flash-lite': '~$0.005-0.01 per generation',
-    'gemini-2.0-flash': '~$0.01-0.03 per generation',
+    'gemini-3.8-flash': '~$0.03-0.10 per generation',
+    'gemini-3.6-flash': '~$0.01-0.03 per generation',
+    'gemini-3.5-flash-lite': '~$0.005-0.01 per generation',
+    'gemini-3.1-flash-lite': '~$0.005-0.01 per generation',
   };
 
   return costs[model] || 'Cost varies';

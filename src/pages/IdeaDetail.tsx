@@ -429,7 +429,7 @@ export default function IdeaDetail() {
         {/* Right Column - Sidebar */}
         <div className="space-y-6">
           {/* Score Radar */}
-          <div className="bg-white rounded-2xl border border-surface-200 p-6 sticky top-24">
+          <div className="bg-white rounded-2xl border border-surface-200 p-6">
             <h3 className="text-lg font-bold text-surface-900 mb-4">Opportunity Scores</h3>
             <ScoreRadar scores={opportunity.scores} size={250} />
             <div className="space-y-3 mt-4">
@@ -574,5 +574,4 @@ export default function IdeaDetail() {
     </div>
   );
 }
-
 

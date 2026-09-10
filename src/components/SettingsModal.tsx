@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { X, Key, Info, ExternalLink, CheckCircle2, AlertCircle } from 'lucide-react';
-import { AISettings, saveSettings, loadSettings, clearSettings, defaultModel, availableModels } from '../lib/storage';
+import { X, Key, Info, ExternalLink, CheckCircle2, AlertCircle, Shield } from 'lucide-react';
+import { AISettings, saveSettings, loadSettings, clearSettings, defaultModel, availableModels, isUsingEnvKey, getEnvInfo } from '../lib/storage';
 
 interface SettingsModalProps {
   isOpen: boolean;
@@ -105,18 +105,36 @@ export default function SettingsModal({ isOpen, onClose, onSettingsChange }: Set
         {/* Content */}
         <div className="p-6 space-y-6">
           {/* Security Notice */}
-          <div className="bg-blue-50 border border-blue-200 rounded-xl p-4">
-            <div className="flex items-start gap-3">
-              <Info className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
-              <div>
-                <p className="text-sm font-medium text-blue-900">Your API key stays in your browser</p>
-                <p className="text-xs text-blue-700 mt-1">
-                  Your Gemini API key is stored locally in your browser and sent directly to Google's API. 
-                  It never passes through our servers.
-                </p>
+          {isUsingEnvKey() ? (
+            <div className="bg-green-50 border border-green-200 rounded-xl p-4">
+              <div className="flex items-start gap-3">
+                <Shield className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                <div>
+                  <p className="text-sm font-medium text-green-900">✓ API Key Configured</p>
+                  <p className="text-xs text-green-700 mt-1">
+                    Your Gemini API key is configured via environment variables and ready to use. 
+                    You can optionally override it below with a different key.
+                  </p>
+                  <p className="text-xs text-green-600 mt-2 font-mono">
+                    Model: {getEnvInfo().envModel}
+                  </p>
+                </div>
               </div>
             </div>
-          </div>
+          ) : (
+            <div className="bg-blue-50 border border-blue-200 rounded-xl p-4">
+              <div className="flex items-start gap-3">
+                <Info className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
+                <div>
+                  <p className="text-sm font-medium text-blue-900">Your API key stays in your browser</p>
+                  <p className="text-xs text-blue-700 mt-1">
+                    Your Gemini API key is stored locally in your browser and sent directly to Google's API. 
+                    It never passes through our servers.
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* Provider Info */}
           <div className="bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-4">

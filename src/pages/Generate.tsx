@@ -7,7 +7,7 @@ import {
 } from 'lucide-react';
 import { industries, regions, businessTypes, complexities, problemCategories } from '../data/opportunities';
 import { GenerateParams, Opportunity } from '../types';
-import { loadSettings, hasValidSettings } from '../lib/storage';
+import { loadSettings, hasValidSettings, isUsingEnvKey, getEnvInfo } from '../lib/storage';
 import { generateOpportunities, AIGenerationError } from '../lib/ai-client';
 import { saveGeneratedOpportunities } from '../lib/generated-storage';
 import SettingsModal from '../components/SettingsModal';
@@ -136,7 +136,9 @@ export default function Generate() {
           {hasApiKey ? (
             <div className="flex items-center gap-2 text-sm text-green-700 bg-green-50 px-3 py-1.5 rounded-lg">
               <CheckCircle2 className="w-4 h-4" />
-              AI configured and ready
+              {isUsingEnvKey() 
+                ? `AI configured via environment (${getEnvInfo().envModel})` 
+                : 'AI configured and ready'}
             </div>
           ) : (
             <button

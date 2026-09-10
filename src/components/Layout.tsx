@@ -2,8 +2,9 @@ import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { 
   Sparkles, LayoutDashboard, Lightbulb, GitCompare, 
-  Menu, X, Zap, Bookmark
+  Menu, X, Zap, Bookmark, Settings
 } from 'lucide-react';
+import SettingsModal from './SettingsModal';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -11,6 +12,7 @@ interface LayoutProps {
 
 export default function Layout({ children }: LayoutProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [showSettings, setShowSettings] = useState(false);
   const location = useLocation();
 
   const navItems = [
@@ -59,6 +61,13 @@ export default function Layout({ children }: LayoutProps) {
 
             {/* CTA */}
             <div className="hidden md:flex items-center gap-3">
+              <button
+                onClick={() => setShowSettings(true)}
+                className="p-2 rounded-lg text-surface-500 hover:text-surface-900 hover:bg-surface-100 transition-all"
+                title="AI Settings"
+              >
+                <Settings className="w-5 h-5" />
+              </button>
               <Link
                 to="/generate"
                 className="px-4 py-2 bg-gradient-to-r from-primary-600 to-primary-700 text-white text-sm font-medium rounded-lg hover:from-primary-700 hover:to-primary-800 transition-all shadow-lg shadow-primary-500/25"
@@ -105,6 +114,12 @@ export default function Layout({ children }: LayoutProps) {
       <main className="pt-16">
         {children}
       </main>
+
+      {/* Settings Modal */}
+      <SettingsModal
+        isOpen={showSettings}
+        onClose={() => setShowSettings(false)}
+      />
 
       {/* Footer */}
       <footer className="bg-surface-900 text-surface-300 py-12 mt-20">

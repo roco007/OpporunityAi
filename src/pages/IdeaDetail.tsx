@@ -6,12 +6,19 @@ import {
   ChevronRight, ExternalLink, BookOpen, BarChart3, Rocket
 } from 'lucide-react';
 import { mockOpportunities } from '../data/opportunities';
+import { Opportunity } from '../types';
 import ScoreRadar from '../components/ScoreRadar';
 import ScoreCard from '../components/ScoreCard';
 
 export default function IdeaDetail() {
   const { id } = useParams();
-  const opportunity = mockOpportunities.find(o => o.id === id);
+  
+  // Check session storage first (for AI-generated opportunities)
+  const sessionData = sessionStorage.getItem(`opportunity-${id}`);
+  const sessionOpp: Opportunity | null = sessionData ? JSON.parse(sessionData) : null;
+  
+  // Fall back to mock data
+  const opportunity: Opportunity | undefined = sessionOpp || mockOpportunities.find(o => o.id === id);
 
   if (!opportunity) {
     return (

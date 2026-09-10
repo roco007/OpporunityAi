@@ -1,8 +1,9 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { Search, SlidersHorizontal, Grid3X3, List, X } from 'lucide-react';
 import { mockOpportunities, industries, regions, businessTypes, complexities } from '../data/opportunities';
 import { Opportunity } from '../types';
 import IdeaCard from '../components/IdeaCard';
+import { loadGeneratedOpportunities } from '../lib/generated-storage';
 
 export default function Dashboard() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -13,7 +14,13 @@ export default function Dashboard() {
   const [minScore, setMinScore] = useState(0);
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [showFilters, setShowFilters] = useState(false);
-  const [opportunities, setOpportunities] = useState<Opportunity[]>(mockOpportunities);
+  const [opportunities, setOpportunities] = useState<Opportunity[]>([]);
+
+  // Load both mock and generated opportunities
+  useEffect(() => {
+    const generated = loadGeneratedOpportunities();
+    setOpportunities([...generated, ...mockOpportunities]);
+  }, []);
 
   const toggleSave = (id: string) => {
     setOpportunities(prev => prev.map(o => o.id === id ? { ...o, saved: !o.saved } : o));

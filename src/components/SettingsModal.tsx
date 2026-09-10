@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { X, Key, Info, ExternalLink, CheckCircle2, AlertCircle, Shield, Moon, Sun } from 'lucide-react';
+import { X, Key, Info, ExternalLink, CheckCircle2, AlertCircle, Shield, Moon, Sun, Palette } from 'lucide-react';
 import { AISettings, saveSettings, loadSettings, clearSettings, defaultModel, availableModels, isUsingEnvKey, getEnvInfo } from '../lib/storage';
 import { Theme } from '../lib/theme';
 
@@ -50,7 +50,7 @@ export default function SettingsModal({ isOpen, onClose, onSettingsChange, theme
   const handleTestConnection = async () => {
     setTestResult('testing');
     setTestError('');
-    
+
     try {
       const response = await fetch(
         `https://generativelanguage.googleapis.com/v1beta/models/${settings.model}:generateContent?key=${settings.apiKey}`,
@@ -84,7 +84,7 @@ export default function SettingsModal({ isOpen, onClose, onSettingsChange, theme
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       {/* Backdrop */}
       <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={onClose} />
-      
+
       {/* Modal */}
       <div className="relative bg-white rounded-2xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto">
         {/* Header */}
@@ -92,7 +92,7 @@ export default function SettingsModal({ isOpen, onClose, onSettingsChange, theme
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center">
               <svg className="w-5 h-5 text-white" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
               </svg>
             </div>
             <div>
@@ -110,16 +110,15 @@ export default function SettingsModal({ isOpen, onClose, onSettingsChange, theme
           {/* Appearance */}
           <div>
             <label className="block text-sm font-medium text-surface-700 mb-2">Appearance</label>
-            <div className="grid grid-cols-2 gap-2 rounded-xl bg-surface-50 p-1 border border-surface-200">
+            <div className="grid grid-cols-3 gap-2 rounded-xl bg-surface-50 p-1 border border-surface-200">
               <button
                 type="button"
                 onClick={() => onThemeChange('dark')}
                 aria-pressed={theme === 'dark'}
-                className={`flex items-center justify-center gap-2 rounded-lg px-3 py-2.5 text-sm font-medium transition-all ${
-                  theme === 'dark'
+                className={`flex items-center justify-center gap-2 rounded-lg px-3 py-2.5 text-sm font-medium transition-all ${theme === 'dark'
                     ? 'bg-primary-600 text-white shadow-sm'
                     : 'text-surface-600 hover:bg-white'
-                }`}
+                  }`}
               >
                 <Moon className="w-4 h-4" />
                 Dark
@@ -128,14 +127,25 @@ export default function SettingsModal({ isOpen, onClose, onSettingsChange, theme
                 type="button"
                 onClick={() => onThemeChange('light')}
                 aria-pressed={theme === 'light'}
-                className={`flex items-center justify-center gap-2 rounded-lg px-3 py-2.5 text-sm font-medium transition-all ${
-                  theme === 'light'
+                className={`flex items-center justify-center gap-2 rounded-lg px-3 py-2.5 text-sm font-medium transition-all ${theme === 'light'
                     ? 'bg-primary-600 text-white shadow-sm'
                     : 'text-surface-600 hover:bg-white'
-                }`}
+                  }`}
               >
                 <Sun className="w-4 h-4" />
                 Light
+              </button>
+              <button
+                type="button"
+                onClick={() => onThemeChange('grey')}
+                aria-pressed={theme === 'grey'}
+                className={`flex items-center justify-center gap-2 rounded-lg px-3 py-2.5 text-sm font-medium transition-all ${theme === 'grey'
+                    ? 'bg-primary-600 text-white shadow-sm'
+                    : 'text-surface-600 hover:bg-white'
+                  }`}
+              >
+                <Palette className="w-4 h-4" />
+                Grey
               </button>
             </div>
             <p className="mt-2 text-xs text-surface-500">Dark mode is the default. Your preference is saved on this device.</p>
@@ -149,7 +159,7 @@ export default function SettingsModal({ isOpen, onClose, onSettingsChange, theme
                 <div>
                   <p className="text-sm font-medium text-green-900">✓ API Key Configured</p>
                   <p className="text-xs text-green-700 mt-1">
-                    Your Gemini API key is configured via environment variables and ready to use. 
+                    Your Gemini API key is configured via environment variables and ready to use.
                     You can optionally override it below with a different key.
                   </p>
                   <p className="text-xs text-green-600 mt-2 font-mono">
@@ -165,7 +175,7 @@ export default function SettingsModal({ isOpen, onClose, onSettingsChange, theme
                 <div>
                   <p className="text-sm font-medium text-blue-900">Your API key stays in your browser</p>
                   <p className="text-xs text-blue-700 mt-1">
-                    Your Gemini API key is stored locally in your browser and sent directly to Google's API. 
+                    Your Gemini API key is stored locally in your browser and sent directly to Google's API.
                     It never passes through our servers.
                   </p>
                 </div>
@@ -185,7 +195,7 @@ export default function SettingsModal({ isOpen, onClose, onSettingsChange, theme
               </div>
             </div>
             <p className="text-xs text-surface-600 mt-2">
-              Gemini offers excellent reasoning capabilities, large context windows, and competitive pricing. 
+              Gemini offers excellent reasoning capabilities, large context windows, and competitive pricing.
               Get a free API key from Google AI Studio.
             </p>
           </div>
@@ -199,7 +209,7 @@ export default function SettingsModal({ isOpen, onClose, onSettingsChange, theme
             <input
               type="password"
               value={settings.apiKey}
-              onChange={(e) => { setSettings({...settings, apiKey: e.target.value}); setTestResult('idle'); setTestError(''); }}
+              onChange={(e) => { setSettings({ ...settings, apiKey: e.target.value }); setTestResult('idle'); setTestError(''); }}
               placeholder="AIza..."
               className="w-full px-4 py-2.5 bg-surface-50 border border-surface-200 rounded-xl text-sm font-mono focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
             />
@@ -222,7 +232,7 @@ export default function SettingsModal({ isOpen, onClose, onSettingsChange, theme
                 </button>
               )}
             </div>
-            
+
             {/* Test Result */}
             {testResult === 'success' && (
               <div className="mt-2 flex items-center gap-2 text-xs text-green-700 bg-green-50 px-3 py-2 rounded-lg">
@@ -248,12 +258,11 @@ export default function SettingsModal({ isOpen, onClose, onSettingsChange, theme
               {availableModels.map(model => (
                 <button
                   key={model.value}
-                  onClick={() => setSettings({...settings, model: model.value})}
-                  className={`w-full p-3 rounded-xl border-2 text-left transition-all ${
-                    settings.model === model.value
+                  onClick={() => setSettings({ ...settings, model: model.value })}
+                  className={`w-full p-3 rounded-xl border-2 text-left transition-all ${settings.model === model.value
                       ? 'border-blue-500 bg-blue-50'
                       : 'border-surface-200 hover:border-surface-300 bg-white'
-                  }`}
+                    }`}
                 >
                   <div className="flex items-center justify-between">
                     <div>

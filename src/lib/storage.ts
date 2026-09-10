@@ -1,5 +1,5 @@
 export interface AISettings {
-  provider: 'openai' | 'anthropic';
+  provider: 'gemini';
   apiKey: string;
   model: string;
 }
@@ -15,7 +15,16 @@ export const loadSettings = (): AISettings | null => {
   if (!stored) return null;
   
   try {
-    return JSON.parse(stored);
+    const parsed = JSON.parse(stored);
+    // Migrate old settings to Gemini
+    if (parsed.provider !== 'gemini') {
+      return {
+        provider: 'gemini',
+        apiKey: '',
+        model: defaultModel,
+      };
+    }
+    return parsed;
   } catch {
     return null;
   }
@@ -30,20 +39,27 @@ export const hasValidSettings = (): boolean => {
   return !!(settings && settings.apiKey && settings.apiKey.trim().length > 0);
 };
 
-export const defaultModels = {
-  openai: 'gpt-4o',
-  anthropic: 'claude-3-5-sonnet-20241022'
-};
+export const defaultModel = 'gemini-2.5-flash';
 
-export const availableModels = {
-  openai: [
-    { value: 'gpt-4o', label: 'GPT-4o (Recommended)' },
-    { value: 'gpt-4o-mini', label: 'GPT-4o Mini (Faster, Cheaper)' },
-    { value: 'gpt-4-turbo', label: 'GPT-4 Turbo' },
-  ],
-  anthropic: [
-    { value: 'claude-3-5-sonnet-20241022', label: 'Claude 3.5 Sonnet (Recommended)' },
-    { value: 'claude-3-opus-20240229', label: 'Claude 3 Opus (Most Capable)' },
-    { value: 'claude-3-haiku-20240307', label: 'Claude 3 Haiku (Fastest)' },
-  ]
-};
+export const availableModels = [
+  { 
+    value: 'gemini-2.5-pro', 
+    label: 'Gemini 2.5 Pro (Most Capable)',
+    description: 'Best quality, highest reasoning capability'
+  },
+  { 
+    value: 'gemini-2.5-flash', 
+    label: 'Gemini 2.5 Flash (Recommended)',
+    description: 'Great balance of speed and quality'
+  },
+  { 
+    value: 'gemini-2.5-flash-lite', 
+    label: 'Gemini 2.5 Flash Lite (Fastest)',
+    description: 'Fastest responses, lowest cost'
+  },
+  { 
+    value: 'gemini-2.0-flash', 
+    label: 'Gemini 2.0 Flash (Stable)',
+    description: 'Reliable and well-tested'
+  },
+];

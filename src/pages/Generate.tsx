@@ -7,7 +7,7 @@ import {
 } from 'lucide-react';
 import { industries, regions, businessTypes, complexities, problemCategories } from '../data/opportunities';
 import { GenerateParams, Opportunity } from '../types';
-import { loadSettings, hasValidSettings, defaultModels } from '../lib/storage';
+import { loadSettings, hasValidSettings } from '../lib/storage';
 import { generateOpportunities, AIGenerationError } from '../lib/ai-client';
 import { saveGeneratedOpportunities } from '../lib/generated-storage';
 import SettingsModal from '../components/SettingsModal';
@@ -144,7 +144,7 @@ export default function Generate() {
               className="flex items-center gap-2 text-sm text-amber-700 bg-amber-50 px-3 py-1.5 rounded-lg hover:bg-amber-100 transition-colors"
             >
               <AlertCircle className="w-4 h-4" />
-              Configure AI API key to generate ideas
+              Configure Gemini API key to generate ideas
               <Settings className="w-3.5 h-3.5" />
             </button>
           )}
@@ -379,19 +379,19 @@ export default function Generate() {
             <p className="text-sm text-surface-500 mb-6">{progress}</p>
             <div className="max-w-md mx-auto space-y-3">
               {[
-                'Analyzing market data and trends...',
+                'Gemini is analyzing market data and trends...',
                 'Researching competitor landscape...',
                 'Evaluating technical feasibility...',
                 'Calculating opportunity scores...',
                 'Generating detailed analysis...'
               ].map((step, i) => (
                 <div key={i} className="flex items-center gap-3 text-sm text-surface-600">
-                  <div className="w-2 h-2 rounded-full bg-primary-500 animate-pulse" style={{ animationDelay: `${i * 0.3}s` }} />
+                  <div className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" style={{ animationDelay: `${i * 0.3}s` }} />
                   {step}
                 </div>
               ))}
             </div>
-            <p className="text-xs text-surface-400 mt-6">This may take 30-60 seconds depending on the AI model...</p>
+            <p className="text-xs text-surface-400 mt-6">This may take 20-60 seconds depending on the Gemini model...</p>
           </div>
         </div>
       )}

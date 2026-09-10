@@ -11,6 +11,7 @@ import { loadSettings, hasValidSettings, isUsingEnvKey, getEnvInfo } from '../li
 import { generateOpportunities, AIGenerationError } from '../lib/ai-client';
 import { saveGeneratedOpportunities } from '../lib/generated-storage';
 import SettingsModal from '../components/SettingsModal';
+import { loadTheme, setTheme, Theme } from '../lib/theme';
 
 export default function Generate() {
   const navigate = useNavigate();
@@ -20,6 +21,7 @@ export default function Generate() {
   const [generatedOpps, setGeneratedOpps] = useState<Opportunity[]>([]);
   const [showSettings, setShowSettings] = useState(false);
   const [hasApiKey, setHasApiKey] = useState(hasValidSettings());
+  const [theme, setCurrentTheme] = useState<Theme>(() => loadTheme());
   
   const [params, setParams] = useState<GenerateParams>({
     targetMarket: '',
@@ -487,6 +489,11 @@ export default function Generate() {
         isOpen={showSettings}
         onClose={() => setShowSettings(false)}
         onSettingsChange={() => setHasApiKey(hasValidSettings())}
+        theme={theme}
+        onThemeChange={(nextTheme) => {
+          setCurrentTheme(nextTheme);
+          setTheme(nextTheme);
+        }}
       />
     </div>
   );

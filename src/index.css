@@ -12,6 +12,59 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* The UI uses the existing surface palette, so these overrides keep the theme
+   consistent without duplicating every component's utility classes. */
+.dark body {
+  background: #0f172a;
+  color: #e2e8f0;
+}
+
+.dark .bg-white { background-color: #172033; }
+.dark .bg-surface-50 { background-color: #0f172a; }
+.dark .bg-surface-100 { background-color: #1e293b; }
+.dark .bg-surface-200 { background-color: #334155; }
+
+.dark .text-surface-900 { color: #f8fafc; }
+.dark .text-surface-800 { color: #e2e8f0; }
+.dark .text-surface-700 { color: #cbd5e1; }
+.dark .text-surface-600 { color: #cbd5e1; }
+.dark .text-surface-500 { color: #a8b5c6; }
+.dark .text-surface-400 { color: #94a3b8; }
+.dark .text-surface-300 { color: #cbd5e1; }
+
+.dark .border-surface-100 { border-color: #29364a; }
+.dark .border-surface-200 { border-color: #334155; }
+.dark .border-surface-300 { border-color: #475569; }
+
+.dark .bg-blue-50 { background-color: #172554; }
+.dark .bg-green-50 { background-color: #052e16; }
+.dark .bg-yellow-50 { background-color: #422006; }
+.dark .bg-orange-50 { background-color: #431407; }
+.dark .bg-red-50 { background-color: #450a0a; }
+.dark .bg-indigo-50 { background-color: #1e1b4b; }
+.dark .bg-purple-50 { background-color: #2e1065; }
+.dark .from-surface-50 { --tw-gradient-from: #0f172a var(--tw-gradient-from-position); }
+.dark .to-surface-50 { --tw-gradient-to: #0f172a var(--tw-gradient-to-position); }
+.dark .from-blue-50 { --tw-gradient-from: #172554 var(--tw-gradient-from-position); }
+.dark .to-indigo-50 { --tw-gradient-to: #1e1b4b var(--tw-gradient-to-position); }
+
+.dark .border-blue-100, .dark .border-blue-200 { border-color: #1e40af; }
+.dark .border-green-100, .dark .border-green-200 { border-color: #166534; }
+.dark .border-yellow-100, .dark .border-yellow-200 { border-color: #854d0e; }
+.dark .border-orange-100, .dark .border-orange-200 { border-color: #9a3412; }
+.dark .border-red-100, .dark .border-red-200 { border-color: #991b1b; }
+
+.dark .text-blue-900 { color: #dbeafe; }
+.dark .text-blue-700 { color: #93c5fd; }
+.dark .text-blue-600 { color: #60a5fa; }
+.dark .text-green-900 { color: #dcfce7; }
+.dark .text-green-700 { color: #86efac; }
+.dark .text-green-600 { color: #4ade80; }
+.dark .text-yellow-700, .dark .text-yellow-600 { color: #fcd34d; }
+.dark .text-orange-700, .dark .text-orange-600 { color: #fdba74; }
+.dark .text-red-900 { color: #fee2e2; }
+.dark .text-red-700, .dark .text-red-600 { color: #fca5a5; }
+
 @keyframes float {
   0%, 100% { transform: translateY(0px); }
   50% { transform: translateY(-10px); }

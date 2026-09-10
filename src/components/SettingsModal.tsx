@@ -1,14 +1,17 @@
 import { useState, useEffect } from 'react';
-import { X, Key, Info, ExternalLink, CheckCircle2, AlertCircle, Shield } from 'lucide-react';
+import { X, Key, Info, ExternalLink, CheckCircle2, AlertCircle, Shield, Moon, Sun } from 'lucide-react';
 import { AISettings, saveSettings, loadSettings, clearSettings, defaultModel, availableModels, isUsingEnvKey, getEnvInfo } from '../lib/storage';
+import { Theme } from '../lib/theme';
 
 interface SettingsModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSettingsChange?: () => void;
+  theme: Theme;
+  onThemeChange: (theme: Theme) => void;
 }
 
-export default function SettingsModal({ isOpen, onClose, onSettingsChange }: SettingsModalProps) {
+export default function SettingsModal({ isOpen, onClose, onSettingsChange, theme, onThemeChange }: SettingsModalProps) {
   const [settings, setSettings] = useState<AISettings>({
     provider: 'gemini',
     apiKey: '',
@@ -93,8 +96,8 @@ export default function SettingsModal({ isOpen, onClose, onSettingsChange }: Set
               </svg>
             </div>
             <div>
-              <h2 className="text-lg font-bold text-surface-900">Gemini AI Settings</h2>
-              <p className="text-xs text-surface-500">Configure your Google AI Studio API key</p>
+              <h2 className="text-lg font-bold text-surface-900">Settings</h2>
+              <p className="text-xs text-surface-500">Manage appearance and Gemini AI access</p>
             </div>
           </div>
           <button onClick={onClose} className="p-2 rounded-lg hover:bg-surface-100 transition-colors">
@@ -104,6 +107,40 @@ export default function SettingsModal({ isOpen, onClose, onSettingsChange }: Set
 
         {/* Content */}
         <div className="p-6 space-y-6">
+          {/* Appearance */}
+          <div>
+            <label className="block text-sm font-medium text-surface-700 mb-2">Appearance</label>
+            <div className="grid grid-cols-2 gap-2 rounded-xl bg-surface-50 p-1 border border-surface-200">
+              <button
+                type="button"
+                onClick={() => onThemeChange('dark')}
+                aria-pressed={theme === 'dark'}
+                className={`flex items-center justify-center gap-2 rounded-lg px-3 py-2.5 text-sm font-medium transition-all ${
+                  theme === 'dark'
+                    ? 'bg-primary-600 text-white shadow-sm'
+                    : 'text-surface-600 hover:bg-white'
+                }`}
+              >
+                <Moon className="w-4 h-4" />
+                Dark
+              </button>
+              <button
+                type="button"
+                onClick={() => onThemeChange('light')}
+                aria-pressed={theme === 'light'}
+                className={`flex items-center justify-center gap-2 rounded-lg px-3 py-2.5 text-sm font-medium transition-all ${
+                  theme === 'light'
+                    ? 'bg-primary-600 text-white shadow-sm'
+                    : 'text-surface-600 hover:bg-white'
+                }`}
+              >
+                <Sun className="w-4 h-4" />
+                Light
+              </button>
+            </div>
+            <p className="mt-2 text-xs text-surface-500">Dark mode is the default. Your preference is saved on this device.</p>
+          </div>
+
           {/* Security Notice */}
           {isUsingEnvKey() ? (
             <div className="bg-green-50 border border-green-200 rounded-xl p-4">

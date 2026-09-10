@@ -5,6 +5,7 @@ import {
   Menu, X, Zap, Bookmark, Settings
 } from 'lucide-react';
 import SettingsModal from './SettingsModal';
+import { loadTheme, setTheme, Theme } from '../lib/theme';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -13,7 +14,13 @@ interface LayoutProps {
 export default function Layout({ children }: LayoutProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
+  const [theme, setCurrentTheme] = useState<Theme>(() => loadTheme());
   const location = useLocation();
+
+  const handleThemeChange = (nextTheme: Theme) => {
+    setCurrentTheme(nextTheme);
+    setTheme(nextTheme);
+  };
 
   const navItems = [
     { path: '/', label: 'Home', icon: Sparkles },
@@ -119,6 +126,8 @@ export default function Layout({ children }: LayoutProps) {
       <SettingsModal
         isOpen={showSettings}
         onClose={() => setShowSettings(false)}
+        theme={theme}
+        onThemeChange={handleThemeChange}
       />
 
       {/* Footer */}
